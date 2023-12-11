@@ -1,13 +1,26 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace RobotSimulator.Models
+﻿namespace RobotSimulator.Models
 {
-    public class Robot
+    public class Robot : IRobot
     {
-        public Robot(int xPosition, int yPosition, string direction)
+        private readonly IWorldMap worldMap;
+
+        public Robot(IWorldMap worldMap)
         {
-            Position = (xPosition, yPosition);
-            Direction = CardinalDirection.ToVector[direction];
+            this.worldMap = worldMap;
+        }
+
+        public bool IsPlaced {  get; private set;}
+
+        public bool Place((int X, int Y) position, string direction)
+        {
+            if (worldMap.CheckPosition(position))
+            {
+                Position = position;
+                Direction = CardinalDirection.ToVector[direction];
+                IsPlaced = true;
+                return true;
+            }
+            return false;
         }
 
         public (int X, int Y) Position { get; private set; }
@@ -20,8 +33,13 @@ namespace RobotSimulator.Models
         /// <returns>A bool indicating if the robot moved or not.</returns>
         public bool MoveForward()
         {
+            if(!IsPlaced)
+            {
+                return false;
+            }
+
             var newLocation = (Position.X + Direction.X, Position.Y + Direction.Y);
-            if (WorldMap.CheckPosition(newLocation))
+            if (worldMap.CheckPosition(newLocation))
             {
                 Position = newLocation;
                 return true;
@@ -33,18 +51,27 @@ namespace RobotSimulator.Models
         /// <summary>
         /// Rotate robot left by swapping X and Y then multiplying the new X by -1
         /// </summary>
-        public void RotateLeft()
+        public bool RotateLeft()
         {
-            Direction = (Direction.Y * -1, Direction.X); 
-
+            if (IsPlaced)
+            {
+                Direction = (Direction.Y * -1, Direction.X);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
         /// Rotate robot right by swapping X and Y then multiplying the new Y by -1
         /// </summary>
-        public void RotateRight()
+        public bool RotateRight()
         {
-            Direction = (Direction.Y, Direction.X * -1);
+            if (IsPlaced)
+            {
+                Direction = (Direction.Y, Direction.X * -1);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -53,7 +80,14 @@ namespace RobotSimulator.Models
         /// <returns>A string concatination of the X, Y and direction of the robot.</returns>
         public string Report()
         {
-            return $"{Position.X},{Position.Y},{CardinalDirection.ToCardinal[Direction]}";
+            if (IsPlaced)
+            {
+                return $"{Position.X},{Position.Y},{CardinalDirection.ToCardinal[Direction]}";
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -4,11 +4,20 @@ namespace RobotSImulatorTest
 {
     public class RobotTests
     {
+        private IWorldMap worldMap;
+
+        [SetUp]
+        public void Setup()
+        {
+            worldMap = new SquareWorldMap();
+        }
+
         [TestCase(0)]
         [TestCase(3)]
         public void MoveForward_ValidMovementNorth_ReturnsTrue(int yPosition)
         {
-            var robot = new Robot(0, yPosition, "NORTH");
+            var robot = new Robot(worldMap);
+            robot.Place((0, yPosition), "NORTH");
 
             var result = robot.MoveForward();
 
@@ -19,8 +28,8 @@ namespace RobotSImulatorTest
         [TestCase(3)]
         public void MoveForward_ValidMovementEast_ReturnsTrue(int xPosition)
         {
-            var robot = new Robot(xPosition, 0, "EAST");
-
+            var robot = new Robot(worldMap);
+            robot.Place((xPosition, 0), "EAST");
             var result = robot.MoveForward();
 
             Assert.IsTrue(result);
@@ -30,8 +39,8 @@ namespace RobotSImulatorTest
         [TestCase(4)]
         public void MoveForward_ValidMovementSouth_ReturnsTrue(int yPosition)
         {
-            var robot = new Robot(0, yPosition, "SOUTH");
-
+            var robot = new Robot(worldMap);
+            robot.Place((0, yPosition), "SOUTH");
             var result = robot.MoveForward();
 
             Assert.IsTrue(result);
@@ -41,8 +50,8 @@ namespace RobotSImulatorTest
         [TestCase(4)]
         public void MoveForward_ValidMovementWest_ReturnsTrue(int xPosition)
         {
-            var robot = new Robot(xPosition, 0, "WEST");
-
+            var robot = new Robot(worldMap);
+            robot.Place((xPosition, 0), "WEST");
             var result = robot.MoveForward();
 
             Assert.IsTrue(result);
@@ -52,8 +61,8 @@ namespace RobotSImulatorTest
         [TestCase(10)]
         public void MoveForward_InvalidMovemenNorth_ReturnsFalse(int yPosition)
         {
-            var robot = new Robot(0, yPosition, "NORTH");
-
+            var robot = new Robot(worldMap);
+            robot.Place((0, yPosition), "NORTH");
             var result = robot.MoveForward();
 
             Assert.IsFalse(result);
@@ -63,8 +72,8 @@ namespace RobotSImulatorTest
         [TestCase(10)]
         public void MoveForward_InvalidMovemenEast_ReturnsFalse(int xPosition)
         {
-            var robot = new Robot(xPosition, 0, "EAST");
-
+            var robot = new Robot(worldMap);
+            robot.Place((xPosition, 0), "EAST");
             var result = robot.MoveForward();
 
             Assert.IsFalse(result);
@@ -74,8 +83,8 @@ namespace RobotSImulatorTest
         [TestCase(-5)]
         public void MoveForward_InvalidMovemenSouth_ReturnsFalse(int yPosition)
         {
-            var robot = new Robot(0, yPosition, "SOUTH");
-
+            var robot = new Robot(worldMap);
+            robot.Place((0, yPosition), "SOUTH");
             var result = robot.MoveForward();
 
             Assert.IsFalse(result);
@@ -85,8 +94,8 @@ namespace RobotSImulatorTest
         [TestCase(-5)]
         public void MoveForward_InvalidMovemenWest_ReturnsFalse(int xPosition)
         {
-            var robot = new Robot(xPosition, 0, "WEST");
-
+            var robot = new Robot(worldMap);
+            robot.Place((xPosition, 0), "WEST");
             var result = robot.MoveForward();
 
             Assert.IsFalse(result);
@@ -98,8 +107,8 @@ namespace RobotSImulatorTest
         [TestCase("WEST", "NORTH")]
         public void RotateRight_ValidTurn(string initialDirection, string expectedDirection)
         {
-            var robot = new Robot(0, 0, initialDirection);
-
+            var robot = new Robot(worldMap);
+            robot.Place((0, 0), initialDirection);
             robot.RotateRight();
 
             Assert.That(CardinalDirection.ToCardinal[robot.Direction], Is.EqualTo(expectedDirection));
@@ -111,8 +120,8 @@ namespace RobotSImulatorTest
         [TestCase("WEST", "SOUTH")]
         public void RotateLeft_ValidTurn(string initialDirection, string expectedDirection)
         {
-            var robot = new Robot(0, 0, initialDirection);
-
+            var robot = new Robot(worldMap);
+            robot.Place((0, 0), initialDirection);
             robot.RotateLeft();
 
             Assert.That(CardinalDirection.ToCardinal[robot.Direction], Is.EqualTo(expectedDirection));
@@ -122,8 +131,8 @@ namespace RobotSImulatorTest
         [TestCase(4, 4, "WEST", "4,4,WEST")]
         public void Report_ValidReport_ReturnsCorrectString(int xPosition, int yPosition, string cardinalDirection, string expectedReport)
         {
-            var robot = new Robot(xPosition, yPosition, cardinalDirection);
-
+            var robot = new Robot(worldMap);
+            robot.Place((xPosition, yPosition), cardinalDirection);
             var result = robot.Report();
 
             Assert.That(result, Is.EqualTo(expectedReport));

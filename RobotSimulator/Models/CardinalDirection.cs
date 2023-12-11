@@ -1,4 +1,7 @@
-﻿namespace RobotSimulator.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace RobotSimulator.Models
 {
     public static class CardinalDirection
     {
@@ -10,12 +13,6 @@
             { "WEST", (-1, 0)},
         };
 
-        public static Dictionary<(int X, int Y), string> ToCardinal = new Dictionary<(int X, int Y), string>
-        {
-            { (0, 1), "NORTH"},
-            { (1, 0), "EAST"},
-            { (0, -1), "SOUTH"},
-            { (-1, 0), "WEST"},
-        };
+        public static Dictionary<(int X, int Y), string> ToCardinal = ToVector.ToDictionary(x => x.Value, x => x.Key);
     }
 }

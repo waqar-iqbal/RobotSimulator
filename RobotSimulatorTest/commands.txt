@@ -15,7 +15,7 @@ LEFT
 MOVE
 REPORT
 
-Expected outcome: 1,2,SOUTH
+Expected output: 1,2,SOUTH
 
 PLACE 4,4,SOUTH
 MOVE
@@ -29,7 +29,7 @@ MOVE
 MOVE
 REPORT
 
-Expected outcome 0,0,WEST
+Expected output: 0,0,WEST
 
 PLACE 0,0,EAST
 MOVE
@@ -45,4 +45,4 @@ MOVE
 MOVE
 REPORT
 
-Expected outcome 4,4,NORTH
+Expected output: 4,4,NORTH
