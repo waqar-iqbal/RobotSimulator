@@ -1,91 +1,59 @@
-﻿namespace RobotSimulator.Models
+﻿using System.Runtime.CompilerServices;
+
+namespace RobotSimulator.Models
 {
     public class Robot
     {
-        public Robot(int xPosition, int yPosition, CardinalDirection cardinalDirection)
+        public Robot(int xPosition, int yPosition, string direction)
         {
-            XPosition = xPosition;
-            YPosition = yPosition;
-            CardinalDirection = cardinalDirection;
+            Position = (xPosition, yPosition);
+            Direction = CardinalDirection.ToVector[direction];
         }
 
-        public CardinalDirection CardinalDirection { get; private set; }
-        public int XPosition { get; private set; }
-        public int YPosition { get; private set; }
+        public (int X, int Y) Position { get; private set; }
 
+        public (int X, int Y) Direction { get; private set; }
+
+        /// <summary>
+        /// Move robot forward by adding the direction vector to the current position, then checking if the new position is valid.
+        /// </summary>
+        /// <returns>A bool indicating if the robot moved or not.</returns>
         public bool MoveForward()
         {
-            if (CardinalDirection == CardinalDirection.North)
+            var newLocation = (Position.X + Direction.X, Position.Y + Direction.Y);
+            if (WorldMap.CheckPosition(newLocation))
             {
-                if (YPosition < WorldMap.YLength - 1)
-                {
-                    YPosition++;
-                    return true;
-                }
-
-                return false;
-            }
-            else if (CardinalDirection == CardinalDirection.East)
-            {
-                if (XPosition < WorldMap.XLength - 1)
-                {
-                    XPosition++;
-                    return true;
-                }
-
-                return false;
-            }
-            else if (CardinalDirection == CardinalDirection.South)
-            {
-                if (YPosition > 0)
-                {
-                    YPosition--;
-                    return true;
-                }
-
-                return false;
-            }
-            else if (CardinalDirection == CardinalDirection.West)
-            {
-                if (XPosition > 0)
-                {
-                    XPosition--;
-                    return true;
-                }
-
-                return false;
+                Position = newLocation;
+                return true;
             }
 
             return false;
         }
 
+        /// <summary>
+        /// Rotate robot left by swapping X and Y then multiplying the new X by -1
+        /// </summary>
         public void RotateLeft()
         {
-            if ( CardinalDirection == CardinalDirection.North)
-            {
-                CardinalDirection = CardinalDirection.West;
-            }
-            else
-            {
-                CardinalDirection--;
-            }
+            Direction = (Direction.Y * -1, Direction.X); 
+
         }
 
+        /// <summary>
+        /// Rotate robot right by swapping X and Y then multiplying the new Y by -1
+        /// </summary>
         public void RotateRight()
         {
-            if (CardinalDirection == CardinalDirection.West)
-            {
-                CardinalDirection = CardinalDirection.North;
-            }
-            else
-            {
-                CardinalDirection++;
-            }
+            Direction = (Direction.Y, Direction.X * -1);
         }
 
+        /// <summary>
+        /// Concatinates the X, Y position of the Robot as well as the direction in to a single string.
+        /// </summary>
+        /// <returns>A string concatination of the X, Y and direction of the robot.</returns>
         public string Report()
         {
-            return $"{XPosition},{YPosition},{CardinalDirection}";
+            return $"{Position.X},{Position.Y},{CardinalDirection.ToCardinal[Direction]}";
         }
     }
 }
