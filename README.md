@@ -7,7 +7,7 @@ Any command that would mean the robot would fall of the table is ignored.
 Commands are issued via command line input.
 
 ## Instrucions on how to run
-Once you've cloned the repository, run the RobotSimulator command line project.
+Once you've cloned the repository, run the RobotSimulatorCLI project.
 We have to first place the robot before issuing any other commands.
 Commands are not case sensative.
 
