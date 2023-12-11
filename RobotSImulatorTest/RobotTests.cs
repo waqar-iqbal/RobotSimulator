@@ -1,6 +1,6 @@
 using RobotSimulator.Models;
 
-namespace RobotSImulatorTest
+namespace RobotSimulatorTest
 {
     public class RobotTests
     {
