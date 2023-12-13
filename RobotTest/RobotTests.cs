@@ -1,10 +1,11 @@
-using RobotSimulator.Models;
+﻿using RobotSimulator.Models;
 
 namespace RobotSimulatorTest
 {
     public class RobotTests
     {
         private IWorldMap worldMap;
+
 
         [SetUp]
         public void Setup()
