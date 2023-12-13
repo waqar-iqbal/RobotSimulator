@@ -34,7 +34,3 @@ Simply type right to use it.
 ### Report
 The report command outputs the robots current coordinates and the direction to the command line.
 Simply type report to use it.
-
-### Exit
-Use the exit command to exit the console app.
-
